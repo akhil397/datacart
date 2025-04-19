@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import CodeModels
-from .forms import CodeForm
+from .forms import CodeForm , SearchForm
 
 # Show list of code entries
 def details(request):
@@ -45,12 +45,25 @@ def delete_data(request, pk):
     return redirect('details')
 
 # Search function
-def search_btn(request):
-    searched = ""
-    posts = []
+def code_list(request):
+    form = SearchForm(request.GET or None)
+    codes = CodeModels.objects.all()
     
-    if request.method == 'POST':
-        searched = request.POST.get('searched', '')  # Avoid KeyError
-        posts = CodeModels.objects.filter(language__icontains=searched)
+    if form.is_valid():
+        query = form.cleaned_data.get('query')
+        language = form.cleaned_data.get('language')
+        
+        if query:
+            codes = codes.filter(
+                CodeModels.Q(title__icontains=query) |
+                CodeModels.Q(types__icontains=query) |
+                CodeModels.Q(description__icontains=query)
+            )
+        if language:
+            codes = codes.filter(language__iexact=language)
     
-    return render(request, 'search.html', {'searched': searched, 'posts': posts})
+    context = {
+        'code_models': codes,
+        'search_form': form
+    }
+    return render(request, 'code_list.html', context)

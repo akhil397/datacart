@@ -13,3 +13,10 @@ class CodeForm(forms.ModelForm):
             'types': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter type'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
+class SearchForm(forms.Form):
+    query = forms.CharField(label='Search',widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Search by title, language, or type...'}),
+    required=False
+    )
+    language = forms.CharField(label='Filter by Language',widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Filter by language...'}),
+    required=False
+    )

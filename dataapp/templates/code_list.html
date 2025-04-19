@@ -1,0 +1,89 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container py-5">
+  <div class="row mb-4">
+    <div class="col-md-8 mx-auto">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <form method="GET" class="row g-3">
+            <div class="col-md-6">{{ search_form.query }}</div>
+            <div class="col-md-4">{{ search_form.language }}</div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-search me-1"></i> Search
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0"><i class="fas fa-code me-2"></i>Code Repository</h2>
+        <a href="{% url 'adddata' %}" class="btn btn-success">
+          <i class="fas fa-plus me-1"></i> Add New
+        </a>
+      </div>
+
+      {% if code_models %}
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+          <thead class="table-dark">
+            <tr>
+              <th>Title</th>
+              <th>Language</th>
+              <th>Type</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for code in code_models %}
+            <tr>
+              <td>
+                <a
+                  href="{% url 'about' code.id %}"
+                  class="text-decoration-none"
+                >
+                  {{ code.title }}
+                </a>
+              </td>
+              <td>
+                <span class="badge bg-primary">{{ code.language }}</span>
+              </td>
+              <td>{{ code.types }}</td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <a
+                    href="{% url 'update_code_model' code.id %}"
+                    class="btn btn-warning"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </a>
+                  <a
+                    href="{% url 'delete_data' code.id %}"
+                    class="btn btn-danger"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="alert alert-info text-center py-4">
+        <i class="fas fa-info-circle fa-2x mb-3"></i>
+        <h4>No code snippets found</h4>
+        <p class="mb-0">
+          Try different search criteria or add a new code snippet
+        </p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
