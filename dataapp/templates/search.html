@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <h1>Search</h1>
+
+  {% if searched %}
+  <h2>Results for: <span class="text-primary">{{ searched }}</span></h2>
+
+  {% if posts %}
+  <ol class="list-group list-group-numbered">
+    {% for post in posts %}
+    <li class="list-group-item">
+      <a class="text-bg-warning link-dark p-2" href="{% url 'about' post.id %}">
+        {{ post.title }}
+      </a>
+      <a
+        class="text-bg-info link-light p-2"
+        href="{% url 'update_data' post.id %}"
+      >
+        Update
+      </a>
+      <a class="text-bg-danger p-2" href="{% url 'delete_data' post.id %}">
+        Delete
+      </a>
+    </li>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <p class="alert alert-warning">
+    No results found for "<b>{{ searched }}</b>". Try again.
+  </p>
+  {% endif %} {% else %}
+  <p class="alert alert-info">Enter a search term to find code models.</p>
+  {% endif %}
+</div>
+
+{% endblock content %}
