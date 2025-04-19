@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Q
 from .models import CodeModels
 from .forms import CodeForm , SearchForm
 
@@ -52,12 +53,11 @@ def code_list(request):
     if form.is_valid():
         query = form.cleaned_data.get('query')
         language = form.cleaned_data.get('language')
-        
         if query:
             codes = codes.filter(
-                CodeModels.Q(title__icontains=query) |
-                CodeModels.Q(types__icontains=query) |
-                CodeModels.Q(description__icontains=query)
+                Q(title__icontains=query) |
+                Q(types__icontains=query) |
+                Q(description__icontains=query)
             )
         if language:
             codes = codes.filter(language__iexact=language)
