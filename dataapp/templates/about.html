@@ -1,43 +1,120 @@
 {% extends 'base.html' %} {% block content %}
-<table class="table-primary pt-5">
-  <tr class="table-primary">
-    <h1 class="fw-bold bg-warning">Code Model Detail</h1>
-  </tr>
-  <tr class="table-primary">
-    <p>ID: {{ code_detail.id }}</p>
-  </tr>
-  <tr class="table-primary">
-    <p><h2>Title: </h2>{{ code_detail.title }}</p>
-  </tr>
-  <tr class="table-primary">
-    <p style="background-color: #ee82ee">
-      <h2>Language: </h2>{{ code_detail.language }}
-    </p>
-  </tr>
-  <tr class="table-primary">
-    <p><h2>Codes: </h2>{{ code_detail.codes }}</p>
-  </tr>
-  <tr class="table-primary">
-    <p style="background-color: #3acd99">
-      <h2>Description: </h2>{{ code_detail.description }}
-    </p>
-  </tr>
-  <tr class="table-primary">
-    <p><h2>Type: </h2>{{ code_detail.types }}</p>
-  </tr>
-  {% if code_detail.image %}
-  <tr class="table-primary">
-    <p>
-      <img
-        src="{{ code_detail.image.url }}"
-        alt="{{ code_detail.title }}"
-        width="300"
-      />
-    </p>
-  </tr>
-  {% endif %}
-  <tr class="table-primary">
-    <a class="btn bg-success" href="{% url 'details' %}">Back to list</a>
-  </tr>
-</table>
-{% endblock content %}
+<div class="container py-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+      <div class="d-flex justify-content-between align-items-center">
+        <h1 class="h3 mb-0">
+          <i class="fas fa-file-code me-2"></i>Code Model Detail
+        </h1>
+        <a href="{% url 'details' %}" class="btn btn-light btn-sm">
+          <i class="fas fa-arrow-left me-1"></i> Back to list
+        </a>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <!-- Left Column -->
+        <div class="col-md-6">
+          <div class="mb-4 p-3 bg-light rounded">
+            <h5 class="text-muted mb-3">
+              <i class="fas fa-id-card me-2"></i>Basic Information
+            </h5>
+            <div class="mb-3">
+              <span class="badge bg-secondary">ID</span>
+              <p class="mt-2">{{ code_detail.id }}</p>
+            </div>
+
+            <div class="mb-3">
+              <span class="badge bg-info text-dark"
+                ><i class="fas fa-heading me-1"></i>Title</span
+              >
+              <h4 class="mt-2">{{ code_detail.title }}</h4>
+            </div>
+
+            <div class="mb-3">
+              <span class="badge bg-purple text-white"
+                ><i class="fas fa-code me-1"></i>Language</span
+              >
+              <p class="mt-2">
+                <span class="badge bg-primary">{{ code_detail.language }}</span>
+              </p>
+            </div>
+          </div>
+
+          {% if code_detail.image %}
+          <div class="mb-4">
+            <h5 class="text-muted mb-3">
+              <i class="fas fa-image me-2"></i>Image
+            </h5>
+            <div class="text-center">
+              <img
+                src="{{ code_detail.image.url }}"
+                alt="{{ code_detail.title }}"
+                class="img-fluid rounded shadow-sm border"
+                style="max-height: 300px"
+              />
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-6">
+          <div class="mb-4 p-3 bg-light rounded">
+            <h5 class="text-muted mb-3">
+              <i class="fas fa-code me-2"></i>Code Content
+            </h5>
+            <pre
+              class="bg-dark text-white p-3 rounded"
+              style="white-space: pre-wrap"
+            ><code>{{ code_detail.codes }}</code></pre>
+          </div>
+
+          <div class="mb-4 p-3 bg-light rounded">
+            <h5 class="text-muted mb-3">
+              <i class="fas fa-align-left me-2"></i>Description
+            </h5>
+            <div class="p-3 bg-white rounded">
+              {{ code_detail.description|linebreaks }}
+            </div>
+          </div>
+
+          <div class="mb-4 p-3 bg-light rounded">
+            <h5 class="text-muted mb-3">
+              <i class="fas fa-tags me-2"></i>Type
+            </h5>
+            <p class="mt-2">
+              <span class="badge bg-success">{{ code_detail.types }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer bg-light">
+      <div class="d-flex justify-content-between">
+        <a
+          href="{% url 'update_code_model' code_detail.id %}"
+          class="btn btn-warning"
+        >
+          <i class="fas fa-edit me-1"></i> Edit
+        </a>
+        <a href="{% url 'delete_data' code_detail.id %}" class="btn btn-danger">
+          <i class="fas fa-trash-alt me-1"></i> Delete
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bg-purple {
+    background-color: #6f42c1;
+  }
+  pre {
+    font-family: "Courier New", monospace;
+    font-size: 0.9rem;
+  }
+</style>
+{% endblock %}

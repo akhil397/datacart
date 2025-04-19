@@ -1,10 +1,85 @@
-{% extends 'base.html' %} {% block content %}
-<div class="container">
-  <h1>Update Code Model: {{ code.title }}</h1>
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %} {{ form.as_p }}
-    <button type="submit">Save changes</button>
-  </form>
-  <a href="{% url 'details' %}">Back to list</a>
+{% extends 'base.html' %} {% block title %}Update {{ code.title }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">
+              <i class="fas fa-edit me-2"></i>Update: {{ code.title }}
+            </h2>
+            <a href="{% url 'details' %}" class="btn btn-light btn-sm">
+              <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="needs-validation"
+            novalidate
+          >
+            {% csrf_token %} {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+            </div>
+            {% endif %} {% for field in form %}
+            <div class="mb-4">
+              <label for="{{ field.id_for_label }}" class="form-label fw-bold">
+                {{ field.label }} {% if field.field.required %}<span
+                  class="text-danger"
+                  >*</span
+                >{% endif %}
+              </label>
+
+              {% if field.name == 'codes' %}
+              <div class="position-relative">
+                {{ field }}
+                <small class="text-muted form-text"
+                  >Use Ctrl+Space for code completion</small
+                >
+              </div>
+              {% else %} {{ field }} {% endif %} {% if field.help_text %}
+              <small class="text-muted form-text">{{ field.help_text }}</small>
+              {% endif %} {% if field.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in field.errors %} {{ error }} {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-between mt-4">
+              <button type="submit" class="btn btn-success px-4">
+                <i class="fas fa-save me-2"></i>Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-{% comment %} new {% endcomment %} {% endblock content %}
+
+<style>
+  /* Custom styles for form elements */
+  textarea.form-control {
+    min-height: 120px;
+  }
+
+  #id_codes {
+    font-family: "Courier New", monospace;
+    min-height: 300px;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #6f42c1;
+    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+  }
+</style>
+
+{% endblock %}
