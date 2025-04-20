@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Q
 from .models import CodeModels
+from django.db.models import Q
 from .forms import CodeForm , SearchForm
 
 # Show list of code entries
@@ -19,7 +19,7 @@ def adddata(request):
         codeformsave = CodeForm(request.POST)
         if codeformsave.is_valid():
             codeformsave.save()
-            return redirect('details')  # Redirect after saving
+            return redirect('code_list')  # Redirect after saving
     else:
         codeformsave = CodeForm()
     
@@ -43,7 +43,7 @@ def update_code_model(request, pk):
 def delete_data(request, pk):
     code = get_object_or_404(CodeModels, id=pk)
     code.delete()
-    return redirect('details')
+    return redirect('code_list')
 
 # Search function
 def code_list(request):
@@ -53,6 +53,7 @@ def code_list(request):
     if form.is_valid():
         query = form.cleaned_data.get('query')
         language = form.cleaned_data.get('language')
+        
         if query:
             codes = codes.filter(
                 Q(title__icontains=query) |

@@ -9,7 +9,7 @@
             <h2 class="mb-0">
               <i class="fas fa-plus-circle me-2"></i>Add New Code Model
             </h2>
-            <a href="{% url 'details' %}" class="btn btn-light btn-sm">
+            <a href="{% url 'code_list' %}" class="btn btn-light btn-sm">
               <i class="fas fa-arrow-left me-1"></i> Back to List
             </a>
           </div>
@@ -46,21 +46,14 @@
                   <label for="id_language" class="form-label fw-bold">
                     <i class="fas fa-code me-1"></i>Language
                   </label>
-                  <select
-                    class="form-select"
-                    id="id_language"
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    id="id_title"
                     name="language"
+                    placeholder="Enter code title"
                     required
-                  >
-                    <option value="" selected disabled>Select language</option>
-                    <option value="Python">Python</option>
-                    <option value="JavaScript">JavaScript</option>
-                    <option value="HTML">HTML</option>
-                    <option value="CSS">CSS</option>
-                    <option value="Java">Java</option>
-                    <option value="C++">C++</option>
-                    <option value="Other">Other</option>
-                  </select>
+                  />
                   <div class="invalid-feedback">Please select a language.</div>
                 </div>
 
